@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HoneyEsP Configuration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.2);
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 3px;
+            color: #0c5aa0;
+            font-size: 0.9em;
+        }
+        
+        .schedule-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .schedule-item input {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-primary {
+                grid-column: 1;
+            }
+            
+            .schedule-item {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍯 HoneyEsP</h1>
+        <p class="subtitle">Smart Beehive Monitoring System</p>
+        
+        <form id="settingsForm">
+            <!-- WiFi Settings -->
+            <div class="section">
+                <h2>📡 WiFi Settings</h2>
+                <div class="info-box">
+                    Connect to your home WiFi network for data uploading
+                </div>
+                
+                <div class="form-group">
+                    <label for="ssid">Network Name (SSID)</label>
+                    <input type="text" id="ssid" name="ssid" placeholder="Your WiFi SSID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="WiFi Password" required>
+                </div>
+            </div>
+            
+            <!-- ThinkSpeak Settings -->
+            <div class="section">
+                <h2>📊 ThinkSpeak Analytics</h2>
+                <div class="info-box">
+                    Configure ThinkSpeak for cloud data storage and visualization
+                </div>
+                
+                <div class="form-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="text" id="apiKey" name="apiKey" placeholder="ThinkSpeak Write API Key" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="channelId">Channel ID</label>
+                    <input type="number" id="channelId" name="channelId" placeholder="Channel ID" required>
+                </div>
+            </div>
+            
+            <!-- Measurement Settings -->
+            <div class="section">
+                <h2>⏱️ Measurement Settings</h2>
+                
+                <div class="form-group">
+                    <label for="interval">Measurement Interval (seconds)</label>
+                    <input type="number" id="interval" name="interval" value="300" min="60" required>
+                </div>
+            </div>
+            
+            <!-- Scheduling -->
+            <div class="section">
+                <h2>📅 Operating Schedule</h2>
+                <div class="info-box">
+                    Set time windows when the system should be active (ON/OFF scheduling)
+                </div>
+                
+                <div id="scheduleContainer"></div>
+                <button type="button" onclick="addSchedule()" style="width: 100%; margin-top: 10px;">+ Add Schedule</button>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button type="submit" class="btn-primary">💾 Save Settings</button>
+                <button type="button" class="btn-secondary" onclick="tareSensor()">⚖️ Tare Scale</button>
+                <button type="button" class="btn-secondary" onclick="calibrateSensor()">📏 Calibrate</button>
+            </div>
+            
+            <div id="status"></div>
+        </form>
+    </div>
+    
+    <script>
+        let scheduleCount = 0;
+        
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(document.getElementById('settingsForm'));
+            const data = {
+                ssid: formData.get('ssid'),
+                password: formData.get('password'),
+                apiKey: formData.get('apiKey'),
+                channelId: formData.get('channelId'),
+                interval: formData.get('interval')
+            };
+            
+            try {
+                const response = await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                showStatus(result.message, 'success');
+            } catch (error) {
+                showStatus('Error saving settings: ' + error.message, 'error');
+            }
