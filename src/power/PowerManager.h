@@ -1,1 +1,13 @@
-#ifndef POWER_MANAGER_H\n#define POWER_MANAGER_H\n\nclass PowerManager {\npublic:\n    PowerManager();\n    ~PowerManager();\n    void turnOn();\n    void turnOff();\n    bool isPowerOn();\n};\n\n#endif // POWER_MANAGER_H\n
+#ifndef POWER_MANAGER_H
+#define POWER_MANAGER_H
+
+class PowerManager {
+public:
+    PowerManager();
+    ~PowerManager();
+    void turnOn();
+    void turnOff();
+    bool isPowerOn();
+};
+
+#endif // POWER_MANAGER_H
