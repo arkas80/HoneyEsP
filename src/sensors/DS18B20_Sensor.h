@@ -1,0 +1,1 @@
+#ifndef DS18B20_SENSOR_H\n#define DS18B20_SENSOR_H\n\n#include <OneWire.h>\n#include <DallasTemperature.h>\n\nclass DS18B20_Sensor {\npublic:  \n    DS18B20_Sensor(int pin);\n    void begin();\n    float readTemperature();\n\private:  \n    OneWire* oneWire;\n    DallasTemperature* sensors;\n    int pin;\n};\n\n#endif
