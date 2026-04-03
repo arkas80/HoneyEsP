@@ -1,1 +1,18 @@
-#ifndef LOGGER_H\n#define LOGGER_H\n\n#include <string>\n#include <fstream>\n#include <iostream>\n\nclass Logger {\npublic:   \n    Logger(const std::string &filename);\n    void log(const std::string &message);\nprivate:   \n    std::ofstream logfile;\n};\n\n#endif // LOGGER_H\n
+#ifndef LOGGER_H
+#define LOGGER_H
+
+#include <string>
+#include <fstream>
+#include <iostream>
+
+class Logger {
+public:   
+    Logger(const std::string &filename);
+    ~Logger();
+    void log(const std::string &message);
+
+private:   
+    std::ofstream logfile;
+};
+
+#endif // LOGGER_H
