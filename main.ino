@@ -9,6 +9,11 @@
 #include "WebConfig.h"
 #include "StatusLED.h"
 
+// ============================================================
+// ΕΝΕΡΓΟΠΟΙΗΣΗ DEBUG ΓΙΑ ΜΠΑΤΑΡΙΑ (προαιρετικό)
+// ============================================================
+#define ENABLE_BATTERY_DEBUG 
+
 // ============================================================================================
 // EXTERNAL I2C BUS
 // ============================================================================================
@@ -167,7 +172,8 @@ void setup() {
     Serial.println("🔋 Battery Status:");
     float batVolt = PMU.getBattVoltage();
     if (batVolt > 20) batVolt /= 1000.0;  // Convert mV to V if needed
-    
+
+    //Τάση συστήματος (VSYS)
     float sysVolt = PMU.getSystemVoltage();
     if (sysVolt > 20) sysVolt /= 1000.0;
     
@@ -380,9 +386,15 @@ void setup() {
   float dsTemp = getDS();
   DEBUG_PRINTF("%.1f C\n", dsTemp);
 
-  DEBUG_PRINT(" 🔋 Battery: ");
+    DEBUG_PRINT(" 🔋 Battery: ");
   float v = getBatteryVoltage();
   float batt = getBatteryPercent();
+  
+  // Επιπλέον debug για έλεγχο
+  #ifdef ENABLE_BATTERY_DEBUG
+    printBatteryDebug();
+  #endif
+  
   DEBUG_PRINTF("%.2f V (%.0f %%)\n\n", v, batt);
 
   if (batt < 15 && batt > 0) {

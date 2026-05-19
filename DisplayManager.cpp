@@ -225,28 +225,63 @@ void drawNetworkOperator(String operatorName, int rssi) {
 // ============================================================================================
 void drawBootLogo() {
     tft.fillScreen(ILI9341_BLACK);
+    
+    // Εξωτερικό πλαίσιο
     tft.drawRect(5, 5, 310, 230, ILI9341_DARKGREY);
+    
+    // Λογότυπο HoneyEsp - ΚΕΝΤΡΑΡΙΣΜΕΝΟ
     tft.setTextColor(ILI9341_YELLOW);
     tft.setTextSize(3);
-    tft.setCursor(80, 60);
-    tft.print("HoneyEsp");
-    tft.drawFastHLine(70, 95, 180, ILI9341_YELLOW);
+    String logoText = "HoneyEsp";
+    int16_t x1, y1;
+    uint16_t w, h;
+    tft.getTextBounds(logoText, 0, 0, &x1, &y1, &w, &h);
+    int logoX = 160 - (w / 2);  // Κεντράρισμα στην οθόνη (320/2=160)
+    tft.setCursor(logoX, 55);
+    tft.print(logoText);
+    
+    // Γραμμή κάτω από το λογότυπο
+    tft.drawFastHLine(logoX - 10, 80, w + 20, ILI9341_YELLOW);
+    
+    // "By Arkas" - ΚΕΝΤΡΑΡΙΣΜΕΝΟ
     tft.setTextColor(ILI9341_WHITE);
     tft.setTextSize(2);
-    tft.setCursor(110, 115);
-    tft.print("By Arkas");
+    String byText = "By Arkas";
+    tft.getTextBounds(byText, 0, 0, &x1, &y1, &w, &h);
+    int byX = 160 - (w / 2);
+    tft.setCursor(byX, 105);
+    tft.print(byText);
+    
+    // Έκδοση - ΚΕΝΤΡΑΡΙΣΜΕΝΗ
     tft.setTextSize(1);
     tft.setTextColor(ILI9341_LIGHTGREY);
-    int versionLen = strlen(VERSION);
-    int versionX = 160 - (versionLen * 3);
-    tft.setCursor(versionX, 140);
-    tft.print(VERSION);
-
+    String versionText = VERSION;
+    tft.getTextBounds(versionText, 0, 0, &x1, &y1, &w, &h);
+    int versionX = 160 - (w / 2);
+    tft.setCursor(versionX, 125);
+    tft.print(versionText);
+    
+    // Διαχωριστική γραμμή
+    tft.drawFastHLine(40, 145, 240, ILI9341_DARKGREY);
+    
+    // Οδηγίες - ΚΕΝΤΡΑΡΙΣΜΕΝΕΣ
     tft.setTextColor(ILI9341_CYAN);
-    tft.setCursor(65, 190);
-    tft.print("Hold GPIO0 for 3s");
-    tft.setCursor(85, 205);
-    tft.print("to config");
+    String line1 = "Hold GPIO0 for 3s";
+    tft.getTextBounds(line1, 0, 0, &x1, &y1, &w, &h);
+    int line1X = 160 - (w / 2);
+    tft.setCursor(line1X, 175);
+    tft.print(line1);
+    
+    String line2 = "to config";
+    tft.getTextBounds(line2, 0, 0, &x1, &y1, &w, &h);
+    int line2X = 160 - (w / 2);
+    tft.setCursor(line2X, 195);
+    tft.print(line2);
+    
+    // Μικρό εικονίδιο μελισσούλας (προαιρετικό)
+    tft.setTextColor(ILI9341_YELLOW);
+    tft.setCursor(155, 215);
+    tft.print("🐝");
 }
 
 // ============================================================================================
@@ -256,30 +291,31 @@ void showMeasurement(float weight, float tempAir, float tempHive, float humidity
                      float batteryPercent, int rssi, bool alarm, String networkOperator) {
     tft.fillScreen(ILI9341_BLACK);
 
-    // --- ΠΑΝΩ ΜΠΑΡΑ (ΕΥΘΥΓΡΑΜΜΙΣΗ) ---
+    // --- ΠΑΝΩ ΜΠΑΡΑ (Αριστερή πλευρά) ---
     
-    // 1. Network Operator (Αριστερά)
+    // 1. Network Operator (Αριστερά - ΠΑΝΩ ΣΕΙΡΑ)
     tft.setTextSize(1);
     tft.setTextColor(ILI9341_LIGHTGREY);
-    tft.setCursor(8, 10);
+    tft.setCursor(8, 5);  // Μετακινήθηκε πιο πάνω (από 10 σε 5)
     String shortNet = networkOperator;
-    if(shortNet.length() > 8) shortNet = shortNet.substring(0, 8); // Κόψιμο αν είναι μεγάλο
+    if(shortNet.length() > 8) shortNet = shortNet.substring(0, 8);
     tft.print(shortNet);
     
-    // 2. RSSI (Σήμα) - Σχεδίαση δίπλα στο όνομα
-    drawNetworkOperator("", rssi); 
+    // 2. RSSI (Σήμα) - Δίπλα στο όνομα (ίδια γραμμή)
+    drawNetworkOperator("", rssi);
     
-    // 3. Κεντρικός Τίτλος (HoneyEsp) - Κεντραρισμένος ακριβώς
+    // --- ΠΑΝΩ ΜΠΑΡΑ (Δεξιά πλευρά) ---
+    // 3. Μπαταρία (Δεξιά - ΠΑΝΩ ΣΕΙΡΑ)
+    drawBattery(batteryPercent, false);
+    
+    // --- ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ (ΜΕΤΑΦΕΡΘΗΚΕ ΠΙΟ ΚΑΤΩ) ---
     tft.setTextColor(ILI9341_YELLOW);
     tft.setTextSize(2);
-    tft.setCursor(112, 7); // Κέντρο οθόνης για 8 γράμματα
+    tft.setCursor(112, 35);  // Από 7 σε 35 - ΚΑΤΩ από το network operator
     tft.print("HoneyEsp");
-    tft.drawFastHLine(60, 28, 200, ILI9341_YELLOW); // Γραμμή κάτω από τον τίτλο
-    
-    // 4. Μπαταρία (Δεξιά)
-    drawBattery(batteryPercent, false);
+    tft.drawFastHLine(60, 52, 200, ILI9341_YELLOW);  // Γραμμή κάτω από τον τίτλο (από 28 σε 52)
 
-    // --- ΚΕΝΤΡΙΚΟ ΒΑΡΟΣ (ΠΙΟ ΣΥΜΜΑΖΕΜΕΝΟ) ---
+    // --- ΚΕΝΤΡΙΚΟ ΒΑΡΟΣ ---
     uint16_t weightColor = alarm ? ILI9341_RED : ILI9341_WHITE;
     tft.setTextColor(weightColor);
     tft.setTextSize(5);
@@ -288,15 +324,15 @@ void showMeasurement(float weight, float tempAir, float tempHive, float humidity
     int16_t x1, y1;
     uint16_t w_str, h_str;
     tft.getTextBounds(weightStr, 0, 0, &x1, &y1, &w_str, &h_str);
-    tft.setCursor(160 - w_str / 2, 60); // Ανέβηκε λίγο (από 70 σε 60)
+    tft.setCursor(160 - w_str / 2, 90);  // Από 60 σε 90 (μετατοπίστηκε λόγω τίτλου)
     tft.print(weightStr);
     
     tft.setTextSize(2);
-    tft.setCursor(150, 105); // Δίπλα και κάτω από το βάρος
+    tft.setCursor(150, 130);  // Από 105 σε 130
     tft.print("kg");
 
     // --- ΔΙΑΧΕΙΡΙΣΗ ΜΝΗΜΗΣ ΥΓΡΑΣΙΑΣ ---
-    humPrefs.begin("hum", false); // Άνοιγμα σε read/write mode
+    humPrefs.begin("hum", false);
     float minHum = humPrefs.getFloat("min", 100.0);
     float maxHum = humPrefs.getFloat("max", 0.0);
 
@@ -304,51 +340,51 @@ void showMeasurement(float weight, float tempAir, float tempHive, float humidity
     if (humidity > maxHum) { maxHum = humidity; humPrefs.putFloat("max", maxHum); }
     humPrefs.end();
 
-    // --- ΚΑΤΩ ΜΕΡΟΣ: 3 ΚΑΡΤΕΣ (10-310px) ---
+    // --- ΚΑΤΩ ΜΕΡΟΣ: 3 ΚΑΡΤΕΣ ---
     
     // 1. Air Temp
-    tft.fillRoundRect(8, 140, 96, 85, 8, ILI9341_DARKGREY);
+    tft.fillRoundRect(8, 165, 96, 85, 8, ILI9341_DARKGREY);  // Από 140 σε 165
     tft.setTextColor(ILI9341_CYAN);
     tft.setTextSize(1);
-    tft.setCursor(18, 150);
+    tft.setCursor(18, 175);  // Από 150 σε 175
     tft.print("AIR TEMP");
     tft.setTextColor(ILI9341_WHITE);
     tft.setTextSize(2);
-    tft.setCursor(18, 170);
+    tft.setCursor(18, 195);  // Από 170 σε 195
     tft.printf("%.1f", tempAir);
     tft.setTextSize(1);
     tft.print(" C");
 
     // 2. Hive Temp
-    tft.fillRoundRect(112, 140, 96, 85, 8, ILI9341_DARKGREY);
+    tft.fillRoundRect(112, 165, 96, 85, 8, ILI9341_DARKGREY);  // Από 140 σε 165
     tft.setTextColor(ILI9341_ORANGE);
     tft.setTextSize(1);
-    tft.setCursor(122, 150);
+    tft.setCursor(122, 175);  // Από 150 σε 175
     tft.print("HIVE TEMP");
     tft.setTextColor(ILI9341_WHITE);
     tft.setTextSize(2);
-    tft.setCursor(122, 170);
+    tft.setCursor(122, 195);  // Από 170 σε 195
     tft.printf("%.1f", tempHive);
     tft.setTextSize(1);
     tft.print(" C");
 
     // 3. Humidity + Min/Max
-    tft.fillRoundRect(216, 140, 96, 85, 8, ILI9341_DARKGREY);
+    tft.fillRoundRect(216, 165, 96, 85, 8, ILI9341_DARKGREY);  // Από 140 σε 165
     tft.setTextColor(ILI9341_GREEN);
     tft.setTextSize(1);
-    tft.setCursor(226, 150);
+    tft.setCursor(226, 175);  // Από 150 σε 175
     tft.print("HUMIDITY");
     tft.setTextColor(ILI9341_WHITE);
     tft.setTextSize(2);
-    tft.setCursor(226, 170);
+    tft.setCursor(226, 195);  // Από 170 σε 195
     tft.printf("%.0f%%", humidity);
     
     // Min/Max στο κάτω μέρος της κάρτας
     tft.setTextSize(1);
     tft.setTextColor(ILI9341_LIGHTGREY);
-    tft.setCursor(224, 195);
+    tft.setCursor(224, 220);  // Από 195 σε 220
     tft.printf("min:%.0f%%", minHum);
-    tft.setCursor(224, 208);
+    tft.setCursor(224, 233);  // Από 208 σε 233
     tft.printf("max:%.0f%%", maxHum);
 }
 
